@@ -26,6 +26,8 @@ with a fixed seed. Never evaluate on the training set.
   deleted when the real search lands.
 - `app.py`: the Gradio dashboard. It loads saved plans from `results/` via
   `pp.load_plan`.
+- `render.yaml`: free Render web service that hosts the dashboard (see
+  `docs/deploy.md`).
 - `scripts/generate_results.py`: runs `analyze` offline and saves plans to
   `results/`.
 

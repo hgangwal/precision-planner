@@ -1,6 +1,7 @@
 # Deploys to Hugging Face Spaces: every push to main is mirrored to the Space's git repo.
 # Needs a repo secret HF_TOKEN (a Hugging Face write token) and a repo variable HF_SPACE
-# (e.g. "your-hf-username/precision-planner").
+# (e.g. "your-hf-username/precision-planner"). Skipped while HF_SPACE is unset: creating
+# Gradio Spaces now needs HF PRO or a ZeroGPU-eligible account, so Render is the default host.
 name: sync-to-hf
 
 on:
@@ -10,6 +11,7 @@ on:
 
 jobs:
   sync:
+    if: vars.HF_SPACE != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

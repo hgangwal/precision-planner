@@ -94,7 +94,7 @@ imports anything other than names in `precision_planner.__all__`.
 
 GitHub is the source of truth. A GitHub Action pushes `main` to the HF Space
 git remote using an `HF_TOKEN` repo secret, which is the sync method Hugging
-Face documents. The Space runs the Gradio SDK on ZeroGPU hardware, the only free option for Gradio Spaces as of Oct 2026 (the app never uses the GPU). I'll walk
+Face documents. **Update (Day 1):** HF now charges for Gradio Spaces, so the dashboard is hosted on a free Render web service (`render.yaml`), deployed from `main` after CI passes. The HF sync workflow stays in the repo but is skipped until `HF_SPACE` is set. I'll walk
 you through it step by step when we get there.
 
 ## Day 1 steps
