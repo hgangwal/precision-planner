@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "precision-planner"
+version = "0.1.0.dev0"
+description = "Automatic per-layer mixed-precision planning (FP32/FP16/INT8/FP8) for trained neural networks under an accuracy budget."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Himank Gangwal" }]
+keywords = ["quantization", "mixed-precision", "inference", "pytorch"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# Loading and rendering saved plans needs only the standard library.
+# torch is needed only by analyze()/apply(), so it lives in an extra.
+dependencies = []
+
+[project.optional-dependencies]
+torch = ["torch>=2.1"]
+app = ["gradio>=5.0"]
+dev = ["pytest>=8.0", "torch>=2.1", "gradio>=5.0"]
+
+[project.urls]
+Repository = "https://github.com/hgangwal/precision-planner"
+
+[tool.setuptools.packages.find]
+include = ["precision_planner*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+filterwarnings = ["error::DeprecationWarning:precision_planner.*"]

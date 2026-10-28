@@ -1,0 +1,5 @@
+# Pinned dev environment (Python 3.12). Install with: pip install -r requirements-dev.txt
+gradio==6.31.0
+pytest==9.2.0
+torch==2.15.0
+-e .

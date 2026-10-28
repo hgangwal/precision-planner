@@ -1,0 +1,3 @@
+# Hugging Face Spaces installs gradio itself from `sdk_version` in README.md.
+# The app needs nothing else: plan loading uses only the standard library,
+# and torch is imported lazily by analyze()/apply(), which the app never calls.
