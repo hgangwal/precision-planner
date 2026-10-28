@@ -5,7 +5,7 @@ colorFrom: indigo
 colorTo: green
 sdk: gradio
 sdk_version: 6.31.0
-python_version: "3.12"
+python_version: "3.12.12"
 app_file: app.py
 pinned: false
 license: mit
@@ -48,6 +48,11 @@ work, some steps tolerated FP8 and others needed FP32. Neural network layers
 differ in sensitivity in the same way.
 
 ## Development
+
+**In the browser:** on GitHub, click **Code → Codespaces → Create codespace**.
+It installs Gradio and starts the dashboard, which opens on port 7860.
+
+**Locally:**
 
 ```bash
 python -m venv .venv && source .venv/bin/activate

@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "model_id": "distilbert-base-uncased-finetuned-sst-2-english",
+  "max_accuracy_drop": 0.005,
+  "rounding": "stochastic",
+  "is_sample": true,
+  "library_version": "0.1.0.dev0",
+  "created_at": "2026-10-28T17:23:04+00:00",
+  "metrics": {
+    "accuracy": 0.9128440366972477,
+    "size_mb": 168.7,
+    "latency_ms_mean": 27.0,
+    "latency_ms_std": 1.8,
+    "peak_memory_mb": 229.7
+  },
+  "baselines": {
+    "fp32": {
+      "accuracy": 0.9174311926605505,
+      "size_mb": 255.4,
+      "latency_ms_mean": 28.4,
+      "latency_ms_std": 1.9,
+      "peak_memory_mb": 316.4
+    },
+    "fp16": {
+      "accuracy": 0.9151376146788991,
+      "size_mb": 173.2,
+      "latency_ms_mean": null,
+      "latency_ms_std": null,
+      "peak_memory_mb": 234.2
+    },
+    "int8": {
+      "accuracy": 0.8646788990825688,
+      "size_mb": 132.1,
+      "latency_ms_mean": 15.6,
+      "latency_ms_std": 1.0,
+      "peak_memory_mb": 193.1
+    },
+    "random_mixed": {
+      "accuracy": 0.908256880733945,
+      "size_mb": 167.0,
+      "latency_ms_mean": 26.5,
+      "latency_ms_std": 1.8,
+      "peak_memory_mb": 228.0
+    }
+  },
+  "layers": [
+    {
+      "name": "distilbert.transformer.layer.0.attention.q_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.0.attention.k_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.0.attention.v_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.0.attention.out_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.0.ffn.lin1",
+      "format": "fp16",
+      "num_params": 2362368
+    },
+    {
+      "name": "distilbert.transformer.layer.0.ffn.lin2",
+      "format": "fp16",
+      "num_params": 2360064
+    },
+    {
+      "name": "distilbert.transformer.layer.1.attention.q_lin",
+      "format": "int8",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.1.attention.k_lin",
+      "format": "int8",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.1.attention.v_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.1.attention.out_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.1.ffn.lin1",
+      "format": "fp16",
+      "num_params": 2362368
+    },
+    {
+      "name": "distilbert.transformer.layer.1.ffn.lin2",
+      "format": "fp16",
+      "num_params": 2360064
+    },
+    {
+      "name": "distilbert.transformer.layer.2.attention.q_lin",
+      "format": "int8",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.2.attention.k_lin",
+      "format": "int8",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.2.attention.v_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.2.attention.out_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.2.ffn.lin1",
+      "format": "fp16",
+      "num_params": 2362368
+    },
+    {
+      "name": "distilbert.transformer.layer.2.ffn.lin2",
+      "format": "fp16",
+      "num_params": 2360064
+    },
+    {
+      "name": "distilbert.transformer.layer.3.attention.q_lin",
+      "format": "int8",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.3.attention.k_lin",
+      "format": "int8",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.3.attention.v_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.3.attention.out_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.3.ffn.lin1",
+      "format": "fp16",
+      "num_params": 2362368
+    },
+    {
+      "name": "distilbert.transformer.layer.3.ffn.lin2",
+      "format": "fp16",
+      "num_params": 2360064
+    },
+    {
+      "name": "distilbert.transformer.layer.4.attention.q_lin",
+      "format": "int8",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.4.attention.k_lin",
+      "format": "int8",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.4.attention.v_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.4.attention.out_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.4.ffn.lin1",
+      "format": "fp16",
+      "num_params": 2362368
+    },
+    {
+      "name": "distilbert.transformer.layer.4.ffn.lin2",
+      "format": "fp16",
+      "num_params": 2360064
+    },
+    {
+      "name": "distilbert.transformer.layer.5.attention.q_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.5.attention.k_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.5.attention.v_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.5.attention.out_lin",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "distilbert.transformer.layer.5.ffn.lin1",
+      "format": "fp16",
+      "num_params": 2362368
+    },
+    {
+      "name": "distilbert.transformer.layer.5.ffn.lin2",
+      "format": "fp16",
+      "num_params": 2360064
+    },
+    {
+      "name": "pre_classifier",
+      "format": "fp16",
+      "num_params": 590592
+    },
+    {
+      "name": "classifier",
+      "format": "fp16",
+      "num_params": 1538
+    }
+  ]
+}
