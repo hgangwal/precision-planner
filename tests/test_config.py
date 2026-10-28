@@ -22,6 +22,13 @@ def test_readme_declares_gradio_space():
     assert re.search(r"^app_file:\s*app\.py$", front_matter, re.MULTILINE)
 
 
+def test_readme_python_version_is_supported_by_zerogpu():
+    """Free accounts can only host Gradio Spaces on ZeroGPU, which supports these exact versions."""
+    front_matter = (ROOT / "README.md").read_text(encoding="utf-8").split("---")[1]
+    version = re.search(r'^python_version:\s*"?([\d.]+)"?$', front_matter, re.MULTILINE).group(1)
+    assert version in {"3.12.12", "3.10.13"}
+
+
 def test_gradio_version_matches_across_configs():
     space = _readme_sdk_version()
     dev = _pinned((ROOT / "requirements-dev.txt").read_text(encoding="utf-8"), "gradio")
