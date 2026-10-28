@@ -17,6 +17,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install (CPU-only torch keeps CI fast)
         run: |
-          pip install --index-url https://download.pytorch.org/whl/cpu torch==2.15.0
+          pip install --index-url https://download.pytorch.org/whl/cpu \
+            "torch==2.15.0; python_version >= '3.11'" "torch==2.14.1; python_version < '3.11'"
           pip install -r requirements-dev.txt
       - run: pytest
