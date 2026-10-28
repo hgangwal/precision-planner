@@ -33,5 +33,6 @@ include = ["precision_planner*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-ra --strict-markers"
 filterwarnings = ["error::DeprecationWarning:precision_planner.*"]
