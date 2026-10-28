@@ -49,6 +49,11 @@ differ in sensitivity in the same way.
 
 ## Development
 
+**In the browser:** on GitHub, click **Code → Codespaces → Create codespace**.
+It installs Gradio and starts the dashboard, which opens on port 7860.
+
+**Locally:**
+
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
