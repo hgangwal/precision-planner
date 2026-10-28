@@ -36,6 +36,7 @@ def test_fmt_pct_and_mb():
 def test_fmt_latency():
     assert app.fmt_latency(pp.Metrics(0.9, latency_ms_mean=10.0, latency_ms_std=0.5)) == "10.0 ± 0.5 ms"
     assert app.fmt_latency(pp.Metrics(0.9)) == "n/a (accuracy-only)"
+    assert app.fmt_latency(pp.Metrics(0.9), missing="-") == "-"
 
 
 @pytest.mark.parametrize(
@@ -100,6 +101,8 @@ def test_metric_tiles_has_four_tiles(sample_plan):
     assert out.count('class="pp-tile"') == 4
     for key in ("Accuracy", "Model size", "Latency", "Peak memory"):
         assert key in out
+    drop_pp = sample_plan.accuracy_drop * 100
+    assert f"-{drop_pp:.2f} pp vs FP32" in out
 
 
 def test_metric_tiles_handles_missing_latency(sample_plan):
@@ -125,16 +128,26 @@ def test_baseline_rows_order_and_shape(sample_plan):
     rows = app.baseline_rows(sample_plan)
     assert [r[0] for r in rows] == ["Precision plan", "FP32", "Uniform FP16", "Uniform INT8", "Random mixed"]
     assert all(len(r) == len(app.BASELINE_HEADERS) for r in rows)
+    assert rows[2][4] == "accuracy-only"
     fp32 = rows[1]
     assert fp32[2] == "0.00%" and fp32[6] == "yes"
 
 
+def test_baseline_table_html(sample_plan):
+    out = app.baseline_table_html(sample_plan)
+    assert out.count("<tr") == 1 + 5
+    assert out.count('class="plan"') == 1
+    for header in app.BASELINE_HEADERS:
+        assert f"<th>{header}</th>" in out
+    assert "accuracy-only" in out
+
+
 def test_render_returns_all_outputs(results_dir):
-    banner, summary, tiles, layers, rows = app.render(next(iter(pp.SUPPORTED_MODELS)), 1.3, "stochastic", results_dir)
+    banner, summary, tiles, layers, table = app.render(next(iter(pp.SUPPORTED_MODELS)), 1.3, "stochastic", results_dir)
     assert "Demo data" in banner
     assert "stochastic" in summary and "1.00%" in summary
     assert "pp-tile" in tiles and "pp-chip" in layers
-    assert len(rows) == 5
+    assert table.count("<tr") == 6
 
 
 def test_render_against_committed_results():
@@ -142,7 +155,7 @@ def test_render_against_committed_results():
     model_id = next(iter(pp.SUPPORTED_MODELS))
     for rounding in pp.Rounding:
         for percent in (0.1, 1.0, 5.0):
-            assert len(app.render(model_id, percent, rounding.value)[4]) == 5
+            assert app.render(model_id, percent, rounding.value)[4].count("<tr") == 6
 
 
 def test_build_demo_returns_blocks():

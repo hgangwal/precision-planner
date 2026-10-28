@@ -42,6 +42,13 @@ CSS = """
                           border-radius:2px; margin-right:5px; background:var(--c); }
 .pp-group { display:flex; align-items:center; gap:6px; margin:4px 0; flex-wrap:wrap; }
 .pp-group .g { width:64px; font-size:12px; opacity:.75; flex-shrink:0; }
+.pp-table-wrap { overflow-x:auto; }
+.pp-table { border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums; }
+.pp-table th, .pp-table td { padding:7px 10px; border-bottom:1px solid var(--border-color-primary);
+                             text-align:right; white-space:nowrap; }
+.pp-table th:first-child, .pp-table td:first-child { text-align:left; }
+.pp-table th { font-size:12px; text-transform:uppercase; letter-spacing:.04em; opacity:.75; }
+.pp-table tr.plan td { font-weight:700; }
 .pp-chip { color:#fff; border-radius:4px; padding:3px 7px; font-size:12px;
            font-family:var(--font-mono); white-space:nowrap; }
 """
@@ -63,9 +70,9 @@ def fmt_mb(value: float | None) -> str:
     return "n/a" if value is None else f"{value:.1f} MB"
 
 
-def fmt_latency(metrics: pp.Metrics) -> str:
+def fmt_latency(metrics: pp.Metrics, missing: str = "n/a (accuracy-only)") -> str:
     if metrics.latency_ms_mean is None:
-        return "n/a (accuracy-only)"
+        return missing
     return f"{metrics.latency_ms_mean:.1f} ± {metrics.latency_ms_std:.1f} ms"
 
 
@@ -153,7 +160,7 @@ def metric_tiles_html(plan: pp.Plan) -> str:
     )
     return '<div class="pp-tiles">' + "".join(
         [
-            _tile("Accuracy", fmt_pct(m.accuracy), f"{drop_pp:+.2f} pp drop vs FP32 ({fmt_pct(base.accuracy)})"),
+            _tile("Accuracy", fmt_pct(m.accuracy), f"{-drop_pp:+.2f} pp vs FP32 ({fmt_pct(base.accuracy)})"),
             _tile("Model size", fmt_mb(m.size_mb), _relative(m.size_mb, base.size_mb, "smaller")),
             _tile("Latency", fmt_latency(m), latency_detail),
             _tile("Peak memory", fmt_mb(m.peak_memory_mb), _relative(m.peak_memory_mb, base.peak_memory_mb, "lower")),
@@ -161,7 +168,7 @@ def metric_tiles_html(plan: pp.Plan) -> str:
     ) + "</div>"
 
 
-BASELINE_HEADERS = ["Config", "Accuracy", "Drop vs FP32", "Size", "Latency", "Peak memory", "Within budget"]
+BASELINE_HEADERS = ["Config", "Accuracy", "Drop", "Size", "Latency", "Peak mem", "In budget"]
 
 
 def baseline_rows(plan: pp.Plan) -> list[list[str]]:
@@ -179,12 +186,24 @@ def baseline_rows(plan: pp.Plan) -> list[list[str]]:
                 fmt_pct(m.accuracy),
                 fmt_pct(drop),
                 fmt_mb(m.size_mb),
-                fmt_latency(m),
+                fmt_latency(m, missing="accuracy-only"),
                 fmt_mb(m.peak_memory_mb),
                 "yes" if within_budget(drop, plan.max_accuracy_drop) else "no",
             ]
         )
     return rows
+
+
+def baseline_table_html(plan: pp.Plan) -> str:
+    """The baseline rows as an HTML table, plan row emphasized."""
+    head = "".join(f"<th>{h}</th>" for h in BASELINE_HEADERS)
+    body = "".join(
+        ('<tr class="plan">' if i == 0 else "<tr>")
+        + "".join(f"<td>{html.escape(c)}</td>" for c in row)
+        + "</tr>"
+        for i, row in enumerate(baseline_rows(plan))
+    )
+    return f'<div class="pp-table-wrap"><table class="pp-table"><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>'
 
 
 def render(model_id: str, percent: float, rounding: str, results_dir: Path = RESULTS_DIR):
@@ -195,7 +214,7 @@ def render(model_id: str, percent: float, rounding: str, results_dir: Path = RES
         summary_markdown(plan, percent),
         metric_tiles_html(plan),
         layer_plan_html(plan),
-        baseline_rows(plan),
+        baseline_table_html(plan),
     )
 
 
@@ -232,7 +251,7 @@ def build_demo() -> gr.Blocks:
                 gr.Markdown("### Per-layer plan")
                 layers = gr.HTML()
                 gr.Markdown("### Plan vs baselines")
-                table = gr.Dataframe(headers=BASELINE_HEADERS, interactive=False, wrap=True)
+                table = gr.HTML()
         outputs = [banner, summary, tiles, layers, table]
         run.click(render, inputs=[model, budget, rounding], outputs=outputs)
         demo.load(render, inputs=[model, budget, rounding], outputs=outputs)
